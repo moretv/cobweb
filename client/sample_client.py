@@ -14,7 +14,7 @@ Tasks = Cobweb.Modules.Tasks(freq, dictString, indexUrl, downloadUrl)
 nums = [1, 2, 3, 4, 5]
 count = 0
 
-def para(mod_name):
+def para(mod_name, Modules):
     global nums
     global count
     print 123
@@ -26,7 +26,7 @@ def para(mod_name):
         res = False
     return res
 
-def callback(result):
+def callback(result, Modules):
     print "Result:", result
 
 Tasks.start(para, callback)

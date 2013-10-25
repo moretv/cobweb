@@ -15,11 +15,11 @@ a distributed task execution system
 		indexUrl = "http://127.0.0.1:8080/cobweb/index"
 		downloadUrl = "http://127.0.0.1:8080/cobweb/download/"
 		
-        def para(mod_name):
+        def para(mod_name, Modules):
             res = "blue"
             return res
             
-        def callback(result):
+        def callback(result, Modules):
             print "Result:", result
         
 		Tasks = Cobweb.Modules.Tasks(freq, dictString, indexUrl, downloadUrl)
