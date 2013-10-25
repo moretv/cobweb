@@ -10,10 +10,17 @@ a distributed task execution system
 
 		import Cobweb.Modules
 		
-		freq = 3
+		freq = 3  # 3 seconds
 		dictString = "ThankYouForChoosingMoreTV"
 		indexUrl = "http://127.0.0.1:8080/cobweb/index"
 		downloadUrl = "http://127.0.0.1:8080/cobweb/download/"
 		
+        def para(mod_name):
+            res = "blue"
+            return res
+            
+        def callback(result):
+            print "Result:", result
+        
 		Tasks = Cobweb.Modules.Tasks(freq, dictString, indexUrl, downloadUrl)
-		Tasks.start()
+		Tasks.start(para, callback)

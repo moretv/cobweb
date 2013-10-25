@@ -11,9 +11,17 @@ downloadUrl = "http://127.0.0.1:8080/cobweb/download/"
 
 Tasks = Cobweb.Modules.Tasks(freq, dictString, indexUrl, downloadUrl)
 
+nums = [1, 2, 3, 4, 5]
+count = 0
+
 def para(mod_name):
+    global nums
+    global count
+    print 123
     if mod_name == "sample_mod":
-        res = random.randint(1,10)
+        if count >= len(nums): count = 0
+        res = nums[count]
+        count += 1
     else:
         res = False
     return res

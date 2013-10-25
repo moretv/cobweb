@@ -88,9 +88,13 @@ class Modules:
         except:
             return False
 
-    def _httpget(self, url):
+    def httpget(self, url, post_data=False):
         try:
-            request = urllib2.Request(url)
+            if post_data:
+                data = urllib.urlencode(post_data)
+                request = urllib2.Request(url, data)
+            else:
+                request = urllib2.Request(url)
             response = urllib2.urlopen(request).read()
             return response
         except:
@@ -98,7 +102,7 @@ class Modules:
 
     def _update(self, filename, md5sum):
         try:
-            text = self._httpget(self._download_url+filename)
+            text = self.httpget(self._download_url+filename)
             data = self.deciphering(text)
             new_md5sum = self._md5sum(data)
             if md5sum == new_md5sum:
@@ -114,7 +118,7 @@ class Modules:
 
     def check(self):
         try:
-            text = self._httpget(self._index_url)
+            text = self.httpget(self._index_url)
             data = json.loads(self.deciphering(text))
             items = {}
             status = {}
