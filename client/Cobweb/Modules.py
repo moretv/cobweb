@@ -3,6 +3,7 @@
 import time
 import thread
 import hashlib
+import urllib
 import urllib2
 import json
 import os
@@ -22,10 +23,10 @@ class Tasks:
         while True:
             try:
                 if para:
-                    result = task_module.task(para(mod_name))
+                    result = task_module.task(para(mod_name, self._Modules))
                 else:
                     result = task_module.task()
-                if callback: callback(result)
+                if callback: callback(result, self._Modules)
                 if fname not in self._Modules.module_status: break 
                 if "reload" == self._Modules.module_status[fname]:
                     print "Reload: %s" % fname
