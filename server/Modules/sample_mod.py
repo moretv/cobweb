@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 def sqrt(n):
-	return n**n
+    return n**n
 
 def task(n=False):
-	if n:
-		print sqrt(n)
-	else:
-		print "LOL"
-	return
+    if n:
+        r = sqrt(n)
+    else:
+        r = 0
+    return r
 
 # def main():
-# 	task(2)
+#     task(2)
 
 # if __name__ == '__main__':
-# 	main()
+#     main()

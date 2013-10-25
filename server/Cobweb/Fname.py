@@ -17,7 +17,7 @@ class Fname:
 
 
     # Module file's md5sum
-    def md5sum(self, filename):
+    def _md5sum(self, filename):
         try:
             m = hashlib.md5()
             f = open(filename, 'r')
@@ -28,7 +28,7 @@ class Fname:
             return False
 
     # Encryption text
-    def _encryption(self, text):
+    def encryption(self, text):
         try:
             count = 0
             result = ""
@@ -64,11 +64,11 @@ class Fname:
                 filename = os.path.join(self._root_path, fname)
                 item = {
                     "filename" : fname,
-                    "md5sum" : self.md5sum(filename),
+                    "md5sum" : self._md5sum(filename),
                     "timestamp" : os.path.getmtime(filename)
                 }
                 items.append(item)
-            index_string = self._encryption(json.dumps(items))
+            index_string = self.encryption(json.dumps(items))
             self._index_string = index_string
             return index_string
         except:
@@ -82,7 +82,7 @@ class Fname:
                 f = open(filename, 'r')
                 text = f.read()
                 f.close()
-                result = self._encryption(text)
+                result = self.encryption(text)
             else:
                 result = ""
         except:

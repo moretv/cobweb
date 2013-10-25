@@ -16,15 +16,16 @@ class Tasks:
         self._freq = freq
         self._Modules = Modules(dict_string, index_url, download_url)
 
-    def do_task(self, mod_name, fname, para):
+    def do_task(self, mod_name, fname, para, callback):
         task_module = __import__(mod_name)
         print "Start: %s" % fname
         while True:
             try:
                 if para:
-                    task_module.task(para(mod_name))
+                    result = task_module.task(para(mod_name))
                 else:
-                    task_module.task()
+                    result = task_module.task()
+                if callback: callback(result)
                 if fname not in self._Modules.module_status: break 
                 if "reload" == self._Modules.module_status[fname]:
                     print "Reload: %s" % fname
@@ -37,14 +38,14 @@ class Tasks:
         print "End: %s" % fname
         thread.exit()
 
-    def start(self, para=False):
+    def start(self, para=False, callback=False):
         while True:
             try:
                 fnames = self._Modules.check()
                 for fname in fnames:
                     if ".py" != fname[-3:] : continue
                     mod_name = fname[0:-3]
-                    thread.start_new_thread(self.do_task, (mod_name, fname, para))
+                    thread.start_new_thread(self.do_task, (mod_name, fname, para, callback))
             except:
                 pass
             finally:
@@ -68,7 +69,7 @@ class Modules:
         m.update(text)
         return m.hexdigest()
 
-    def _deciphering(self, text):
+    def deciphering(self, text):
         try:
             count = 0
             result = ""
@@ -98,7 +99,7 @@ class Modules:
     def _update(self, filename, md5sum):
         try:
             text = self._httpget(self._download_url+filename)
-            data = self._deciphering(text)
+            data = self.deciphering(text)
             new_md5sum = self._md5sum(data)
             if md5sum == new_md5sum:
                 filepath = os.path.join(self._root_path, filename)
@@ -114,7 +115,7 @@ class Modules:
     def check(self):
         try:
             text = self._httpget(self._index_url)
-            data = json.loads(self._deciphering(text))
+            data = json.loads(self.deciphering(text))
             items = {}
             status = {}
             new = []
