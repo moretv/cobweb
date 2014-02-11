@@ -7,13 +7,17 @@ import os
 import sys
 
 # Some tools
+
+# RPC method
 class Message:
     def __init__(self, dict_string, Logger):
+        # dict_string for encryption
         self._dict_string_length = len(dict_string)
         dict_number = []
-        for char in dict_string: dict_number.append(ord(char)-31) 
+        for char in dict_string: dict_number.append(ord(char)-31)
         self._dict_num = dict_number
-        self._Logger = Logger
+        
+        self._Logger = Logger # Logger
 
     def deciphering(self, text):
         try:
@@ -43,11 +47,11 @@ class Message:
 
     def httpget(self, url, post_data=False, decipher=True):
         try:
-            if post_data:
+            if post_data: # post method
                 self._Logger.info("POST %s" % url)
                 data = urllib.urlencode(post_data)
                 request = urllib2.Request(url, data)
-            else:
+            else: # get method
                 self._Logger.info("GET %s" % url)
                 request = urllib2.Request(url)
             response = urllib2.urlopen(request).read()
@@ -57,6 +61,7 @@ class Message:
             self._Logger.error("HTTP Failed %s" % url)
             return False
 
+# Logger...
 class Logger:
     def __init__(self, filename="cobweb.log", level=0):
         import logging

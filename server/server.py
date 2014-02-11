@@ -6,45 +6,54 @@ import web
 import Cobweb.Fname
 import Cobweb.Task
 
-Fname = Cobweb.Fname.Fname("ThankYouForChoosingMoreTV")
+# dict_string for encryption
+dictString = "ThankYouForChoosingMoreTV"
+
+Fname = Cobweb.Fname.Fname(dictString)
 Task = Cobweb.Task.Task()
 
 urls = (
-    '/cobweb/index', 'index',
-    '/cobweb/download/(.+)', 'download',
-    '/cobweb/reindex', 'reindex',  # When Modules have been changed, rebuild the index
-    '/cobweb/list', 'list',
-    '/cobweb/result', 'upload',
+    '/cobweb/index', 'index', # Provide modules' list
+    '/cobweb/download/(.+)', 'download', # Provide module files
+    '/cobweb/parameter', 'parameter', # Provide task para
+    '/cobweb/result', 'result', # Get task's result 
+    '/cobweb/reindex', 'reindex',  # Rebuild the index (Manual)
 )
 
 class index:
     def GET(self):
-        return Fname.index()  # Get modules' index
+        return Fname.index()  # Provide modules' list
 
 class download:
     def GET(self, fname):
-        return Fname.files(fname) # Get module file's text
+        return Fname.files(fname) # Provide module files
 
-class reindex:
-    def GET(self):
-        return Fname.newindex() # Rebuild modules' index
-
-class list:
+class parameter:
     def POST(self):
         data = web.input()
         Host = data["Host"] if "Host" in data else "unknow"
         Module = data["Module"] if "Module" in data else False
+        ### not ready ###
         task = Task.request(Module, Host)
-        return Fname.encryption(json.dumps(task))
+        #################
+        para = Fname.encryption(json.dumps(task))
+        return para
 
-class upload:
+class result:
     def POST(self):
         data = web.input()
         Host = data["Host"] if "Host" in data else "unknow"
         Module = data["Module"] if "Module" in data else False
         Result = data["Result"] if "Result" in data else False
-        return Task.response(Module, Host, Result)        
-
+        ### not ready ###
+        status = Task.response(Module, Host, Result)
+        #################
+        return status
+        
+class reindex:
+    def GET(self):
+        return Fname.newindex() # Rebuild the index
+        
 if __name__ == "__main__":
     app = web.application(urls, globals())
     app.run()

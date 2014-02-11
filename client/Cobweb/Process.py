@@ -11,6 +11,7 @@ class Daemon:
         self._pidFile = os.path.join(sys.path[0], filename)
         self.killAll()
 
+    # killall process
     def killAll(self):
         try:
             pf  = file(self._pidFile,'r')
@@ -20,7 +21,8 @@ class Daemon:
             os.remove(self._pidFile)
         except:
             pass
-            
+    
+    # kill a process
     def _kill(self, pid):
         try:
             pidno = int(pid.strip())
@@ -33,6 +35,7 @@ class Daemon:
         except:
             pass
 
+    # make a new process
     def start(self, Task):
         pid = os.fork()
         if 0 == pid:

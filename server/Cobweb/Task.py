@@ -5,9 +5,15 @@ class Task:
         return
 
     def request(self, Module, Host):
-        return "http://www.moretv.com.cn"
+        '''
+        TODO: task queue...
+        '''
+        return 1
 
     def response(self, Module, Host, Result):
         print Result
+        '''
+        TODO: save the result...
+        '''
         res = '{"status":1}'
         return res

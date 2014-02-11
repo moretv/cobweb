@@ -59,15 +59,21 @@ class Fname:
     # Make modules list's cache
     def newindex(self):
         try:
+            # list All files in the Modules direction
+            root_len = len(self._root_path)
             items = []
-            for fname in os.listdir(self._root_path):
-                filename = os.path.join(self._root_path, fname)
-                item = {
-                    "filename" : fname,
-                    "md5sum" : self._md5sum(filename),
-                    "timestamp" : os.path.getmtime(filename)
-                }
-                items.append(item)
+            for root, dirs, files in os.walk(self._root_path):
+                for fname in files:
+                    filename = os.path.join(root, fname)
+                    path = root[root_len+1:]
+                    item = {
+                        "path" : path,
+                        "filename" : fname,
+                        "md5sum" : self._md5sum(filename),
+                        "timestamp" : os.path.getmtime(filename)
+                    }
+                    items.append(item)
+            # encryption JSON String and cache
             index_string = self.encryption(json.dumps(items))
             self._index_string = index_string
             return index_string
